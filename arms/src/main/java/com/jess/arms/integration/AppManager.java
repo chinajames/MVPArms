@@ -323,12 +323,15 @@ public class AppManager {
      * 切换Fragment
      *
      * @param containerViewId Activity Container
-     * @param fragment Target Fragment
+     * @param fragment        Target Fragment
      */
     public void switchFragment(@IdRes int containerViewId, Fragment fragment) {
         FragmentManager fm = ((FragmentActivity) getCurrentActivity()).getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        fm.getFragments().forEach(transaction::hide);
+        for (Fragment f : fm.getFragments()) {
+//            Timber.w("switchFragment: hide--->" + fragment);
+            transaction.hide(f);
+        }
         if (!fragment.isAdded()) {
             transaction.add(containerViewId, fragment, fragment.getTag());
         }

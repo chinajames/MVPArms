@@ -412,7 +412,7 @@ public class UiUtils {
      * 切换Fragment
      *
      * @param containerViewId Activity Container
-     * @param fragment Target Fragment
+     * @param fragment        Target Fragment
      */
     public static void switchFragment(@IdRes int containerViewId, Fragment fragment) {
         Message message = new Message();
