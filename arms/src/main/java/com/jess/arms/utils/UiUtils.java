@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Message;
+import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
@@ -28,6 +30,7 @@ import static com.jess.arms.integration.AppManager.APP_EXIT;
 import static com.jess.arms.integration.AppManager.KILL_ALL;
 import static com.jess.arms.integration.AppManager.SHOW_SNACKBAR;
 import static com.jess.arms.integration.AppManager.START_ACTIVITY;
+import static com.jess.arms.integration.AppManager.SWITCH_FRAGMENT;
 
 /**
  * Created by jess on 2015/11/23.
@@ -51,10 +54,10 @@ public class UiUtils {
                 res));
         // 新建一个属性对象,设置文字的大小
         AbsoluteSizeSpan ass = new AbsoluteSizeSpan(size, true);
-        // 附加属性到文本  
+        // 附加属性到文本
         ss.setSpan(ass, 0, ss.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
-        // 设置hint  
+        // 设置hint
         v.setHint(new SpannedString(ss)); // 一定要进行转换,否则属性会消失
     }
 
@@ -402,6 +405,14 @@ public class UiUtils {
     public static void exitApp() {
         Message message = new Message();
         message.what = APP_EXIT;
+        EventBus.getDefault().post(message, APPMANAGER_MESSAGE);
+    }
+
+    public static void switchFragment(@IdRes int containerViewId, Fragment fragment) {
+        Message message = new Message();
+        message.what = SWITCH_FRAGMENT;
+        message.arg1 = containerViewId;
+        message.obj = fragment;
         EventBus.getDefault().post(message, APPMANAGER_MESSAGE);
     }
 

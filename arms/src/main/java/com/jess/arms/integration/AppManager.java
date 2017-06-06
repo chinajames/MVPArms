@@ -6,7 +6,12 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Message;
+import android.support.annotation.IdRes;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import org.simple.eventbus.EventBus;
@@ -38,6 +43,7 @@ public class AppManager {
     public static final int SHOW_SNACKBAR = 1;
     public static final int KILL_ALL = 2;
     public static final int APP_EXIT = 3;
+    public static final int SWITCH_FRAGMENT = 4;//切换Fragment
     private Application mApplication;
 
     //管理所有activity
@@ -73,6 +79,11 @@ public class AppManager {
                 break;
             case APP_EXIT:
                 appExit();
+                break;
+            case SWITCH_FRAGMENT:
+                if (message.obj == null)
+                    break;
+                switchFragment(message.arg1, (Fragment) message.obj);
                 break;
             default:
                 Timber.tag(TAG).w("The message.what not match");
@@ -278,9 +289,9 @@ public class AppManager {
      * 关闭所有activity
      */
     public void killAll() {
-//        while (getActivityList().size() != 0) { //此方法只能兼容LinkedList
-//            getActivityList().remove(0).finish();
-//        }
+        //        while (getActivityList().size() != 0) { //此方法只能兼容LinkedList
+        //            getActivityList().remove(0).finish();
+        //        }
 
         Iterator<Activity> iterator = getActivityList().iterator();
         while (iterator.hasNext()) {
@@ -306,5 +317,16 @@ public class AppManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void switchFragment(@IdRes int containerViewId, Fragment fragment) {
+        FragmentManager fm = ((FragmentActivity) getCurrentActivity()).getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        fm.getFragments().forEach(transaction::hide);
+        if (!fragment.isAdded()) {
+            transaction.add(containerViewId, fragment, fragment.getTag());
+        }
+        transaction.show(fragment).disallowAddToBackStack();
+        transaction.commit();
     }
 }
