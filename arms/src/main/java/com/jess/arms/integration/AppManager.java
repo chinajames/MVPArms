@@ -319,6 +319,12 @@ public class AppManager {
         }
     }
 
+    /**
+     * 切换Fragment
+     *
+     * @param containerViewId Activity Container
+     * @param fragment Target Fragment
+     */
     public void switchFragment(@IdRes int containerViewId, Fragment fragment) {
         FragmentManager fm = ((FragmentActivity) getCurrentActivity()).getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();

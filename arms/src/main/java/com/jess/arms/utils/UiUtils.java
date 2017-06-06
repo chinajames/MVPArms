@@ -408,6 +408,12 @@ public class UiUtils {
         EventBus.getDefault().post(message, APPMANAGER_MESSAGE);
     }
 
+    /**
+     * 切换Fragment
+     *
+     * @param containerViewId Activity Container
+     * @param fragment Target Fragment
+     */
     public static void switchFragment(@IdRes int containerViewId, Fragment fragment) {
         Message message = new Message();
         message.what = SWITCH_FRAGMENT;
