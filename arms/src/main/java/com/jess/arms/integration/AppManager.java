@@ -328,11 +328,10 @@ public class AppManager {
     public void switchFragment(@IdRes int containerViewId, Fragment fragment) {
         FragmentManager fm = ((FragmentActivity) getCurrentActivity()).getSupportFragmentManager();
         FragmentTransaction transaction = fm.beginTransaction();
-        for (Fragment f : fm.getFragments()) {
-//            Timber.w("switchFragment: hide--->" + fragment);
-            transaction.hide(f);
-        }
-        if (!fragment.isAdded()) {
+        if (fm.getFragments() != null)
+            for (Fragment f : fm.getFragments())
+                transaction.hide(f);
+        if (fragment != null && !fragment.isAdded()) {
             transaction.add(containerViewId, fragment, fragment.getTag());
         }
         transaction.show(fragment).disallowAddToBackStack();
