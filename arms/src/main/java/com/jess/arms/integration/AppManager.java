@@ -332,7 +332,7 @@ public class AppManager {
             for (Fragment f : fm.getFragments())
                 transaction.hide(f);
         if (fragment != null && !fragment.isAdded()) {
-            transaction.add(containerViewId, fragment, fragment.getTag());
+            transaction.add(containerViewId, fragment, fragment.getClass().getSimpleName());
         }
         transaction.show(fragment).disallowAddToBackStack();
         transaction.commit();
